@@ -5,10 +5,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -24,49 +29,153 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author Propietario
  */
 public class GetExcelv1 {
-    static String fileDictName = "";
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws IOException {
-        
-    // FileInputStream file = new FileInputStream(new File("C:\\Users\\Propietario\\\\Downloads\\prueba.xlsx"));
-	       XSSFWorkbook workbook;
+   public static void readXLSFile() throws IOException
+	{
+		InputStream ExcelFileToRead = new FileInputStream("C:\\Users\\Propietario\\Downloads\\Test.xls");
+		HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead);
 
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Open the file"); //name for chooser
-       // FileFilter filter = new FileNameExtensionFilter("excel", ".xlsx"); //filter to show only that
-       		FileNameExtensionFilter filter = new FileNameExtensionFilter("xls and GIF images", "xls", "xlsx");
+		HSSFSheet sheet=wb.getSheetAt(0);
+		HSSFRow row; 
+		HSSFCell cell;
 
-        fileChooser.setAcceptAllFileFilterUsed(false); //to show or not all other files
-        fileChooser.addChoosableFileFilter(filter);
-        fileChooser.setSelectedFile(new File(fileDictName)); //when you want to show the name of file into the chooser
-        fileChooser.setVisible(true);
-        int result = fileChooser.showOpenDialog(fileChooser);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            fileDictName = fileChooser.getSelectedFile().getAbsolutePath();
-        } else {
-            return;
-        }
+		Iterator rows = sheet.rowIterator();
 
-        File file = new File(fileDictName);
-        if (file.exists() == false) {
-            workbook = new XSSFWorkbook();
-            XSSFSheet exampleSheet = workbook.createSheet("1");
-            XSSFRow firstRow = exampleSheet.createRow(1);
-            XSSFCell cell = firstRow.createCell(0);
-            cell.setCellValue("value");
+		while (rows.hasNext())
+		{
+			row=(HSSFRow) rows.next();
+			Iterator cells = row.cellIterator();
+			
+			while (cells.hasNext())
+			{
+				cell=(HSSFCell) cells.next();
+		
+				if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING)
+				{
+					System.out.print(cell.getStringCellValue()+" ");
+				}
+				else if(cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC)
+				{
+					System.out.print(cell.getNumericCellValue()+" ");
+				}
+				else
+				{
+					//U Can Handel Boolean, Formula, Errors
+				}
+			}
+			System.out.println();
+		}
+	
+	}
+	
+	public static void writeXLSFile() throws IOException {
+		
+		String excelFileName = "C:\\Users\\Propietario\\Downloads\\Test.xls";//name of excel file
 
-            try (
-                    //Write the workbook in file system
-                    FileOutputStream out = new FileOutputStream(file)) {
-                workbook.write(out);
-            }
-        } else {
-            // Sheet already exists
-            System.out.println("File already exist");
-        }
-       
-    }
-    
+		String sheetName = "Sheet1";//name of sheet
+
+		HSSFWorkbook wb = new HSSFWorkbook();
+		HSSFSheet sheet = wb.createSheet(sheetName) ;
+
+		//iterating r number of rows
+		for (int r=0;r < 5; r++ )
+		{
+			HSSFRow row = sheet.createRow(r);
+	
+			//iterating c number of columns
+			for (int c=0;c < 5; c++ )
+			{
+				HSSFCell cell = row.createCell(c);
+				
+				cell.setCellValue("Cell "+r+" "+c);
+			}
+		}
+		
+		FileOutputStream fileOut = new FileOutputStream(excelFileName);
+		
+		//write this workbook to an Outputstream.
+		wb.write(fileOut);
+		fileOut.flush();
+		fileOut.close();
+	}
+	
+	public static void readXLSXFile() throws IOException
+	{        
+		InputStream ExcelFileToRead = new FileInputStream("C:\\Users\\Propietario\\Downloads\\prueba.xlsx");
+		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);		
+		XSSFWorkbook test = new XSSFWorkbook(); 
+		
+		XSSFSheet sheet = wb.getSheetAt(0);
+		XSSFRow row; 
+		XSSFCell cell;
+
+		Iterator rows = sheet.rowIterator();
+
+		while (rows.hasNext())
+		{
+			row=(XSSFRow) rows.next();
+			Iterator cells = row.cellIterator();
+                   
+			while (cells.hasNext())
+			{
+				cell=(XSSFCell) cells.next();
+		
+				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
+				{
+					System.out.print(cell.getStringCellValue()+" ");
+                                      				}
+				else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
+				{
+					System.out.print(cell.getNumericCellValue()+" ");
+				}
+				else
+				{
+					//U Can Handel Boolean, Formula, Errors
+				}
+                                  System.out.print("|");
+			}
+			System.out.println();
+		}
+	
+	}
+	
+	public static void writeXLSXFile() throws IOException {
+		
+		String excelFileName = "C:\\Users\\Propietario\\Downloads\\Test.xlsx";//name of excel file
+
+		String sheetName = "Sheet1";//name of sheet
+
+		XSSFWorkbook wb = new XSSFWorkbook();
+		XSSFSheet sheet = wb.createSheet(sheetName) ;
+
+		//iterating r number of rows
+		for (int r=0;r < 5; r++ )
+		{
+			XSSFRow row = sheet.createRow(r);
+
+			//iterating c number of columns
+			for (int c=0;c < 5; c++ )
+			{
+				XSSFCell cell = row.createCell(c);
+	
+				cell.setCellValue("Cell "+r+" "+c);
+			}
+		}
+
+		FileOutputStream fileOut = new FileOutputStream(excelFileName);
+
+		//write this workbook to an Outputstream.
+		wb.write(fileOut);
+		fileOut.flush();
+		fileOut.close();
+	}
+
+	public static void main(String[] args) throws IOException {
+		
+	//	writeXLSFile();
+	//	readXLSFile();
+		
+		//writeXLSXFile();
+		readXLSXFile();
+
+	}
 }
