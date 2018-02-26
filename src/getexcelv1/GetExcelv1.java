@@ -100,7 +100,7 @@ public class GetExcelv1 {
 	
 	public static void readXLSXFile() throws IOException
 	{        
-		InputStream ExcelFileToRead = new FileInputStream("C:\\Users\\Propietario\\Downloads\\prueba.xlsx");
+		InputStream ExcelFileToRead = new FileInputStream("C:\\Users\\Propietario\\Downloads\\prueba2.xlsx");
 		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);		
 		XSSFWorkbook test = new XSSFWorkbook(); 
 		
@@ -121,7 +121,7 @@ public class GetExcelv1 {
 		
 				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
 				{
-					System.out.print(cell.getStringCellValue()+" ");
+					System.out.print(cell.getStringCellValue()+" xx");
                                       				}
 				else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
 				{
