@@ -1,14 +1,21 @@
 
 package getexcelv1;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -17,6 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -29,9 +37,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author Propietario
  */
 public class GetExcelv1 {
+
+   public static ArrayList nombreArrayList = new ArrayList<String>();
+   public static  Date date = new Date();
+   public static   DateFormat hourFormat = new SimpleDateFormat("hh:mm:ss");
+   public static    DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+   
    public static void readXLSFile() throws IOException
 	{
-		InputStream ExcelFileToRead = new FileInputStream("C:\\Users\\Propietario\\Downloads\\Test.xls");
+		InputStream ExcelFileToRead = new FileInputStream("C:\\Users\\Propietario\\Downloads\\prueba2.xls");
 		HSSFWorkbook wb = new HSSFWorkbook(ExcelFileToRead);
 
 		HSSFSheet sheet=wb.getSheetAt(0);
@@ -97,44 +111,54 @@ public class GetExcelv1 {
 		fileOut.flush();
 		fileOut.close();
 	}
-	
+
+
 	public static void readXLSXFile() throws IOException
 	{        
-		InputStream ExcelFileToRead = new FileInputStream("C:\\Users\\Propietario\\Downloads\\prueba2.xlsx");
+		InputStream ExcelFileToRead = new FileInputStream("C:\\Users\\Propietario\\Downloads\\prueba.xlsx");
 		XSSFWorkbook  wb = new XSSFWorkbook(ExcelFileToRead);		
-		XSSFWorkbook test = new XSSFWorkbook(); 
-		
+		XSSFWorkbook test = new XSSFWorkbook(); 		
 		XSSFSheet sheet = wb.getSheetAt(0);
 		XSSFRow row; 
 		XSSFCell cell;
-
 		Iterator rows = sheet.rowIterator();
+                int i=0;
+                DataFormatter formatter = new DataFormatter(Locale.US);
 
 		while (rows.hasNext())
 		{
 			row=(XSSFRow) rows.next();
 			Iterator cells = row.cellIterator();
                    
-			while (cells.hasNext())
+                   String temporal="";
+			while (cells.hasNext())//next fila
 			{
 				cell=(XSSFCell) cells.next();
 		
 				if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING)
 				{
-					System.out.print(cell.getStringCellValue()+" xx");
-                                      				}
+				//	System.out.print(cell.getStringCellValue()+" "+i);
+                                         nombreArrayList.add(cell.getStringCellValue());
+                                        
+                                }
 				else if(cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC)
 				{
-					System.out.print(cell.getNumericCellValue()+" ");
+				//	System.out.print(cell.getNumericCellValue()+" "+i);
+                                          nombreArrayList.add(cell.getNumericCellValue());
 				}
 				else
 				{
 					//U Can Handel Boolean, Formula, Errors
 				}
-                                  System.out.print("|");
-			}
+                                
+                                  
+                                 
+			}//END ROWS
+                         i++;
+                         escribir(nombreArrayList);
+                       nombreArrayList.clear();
 			System.out.println();
-		}
+		}//END FILA
 	
 	}
 	
@@ -169,13 +193,60 @@ public class GetExcelv1 {
 		fileOut.close();
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException
+        {
 		
-	//	writeXLSFile();
-	//	readXLSFile();
-		
-		//writeXLSXFile();
+        	//writeXLSFile();
+         	//readXLSFile();		
+		//writeXLSXFile();nombreArrayList.size()
 		readXLSXFile();
-
-	}
+                
+        // for(int i = 0;i<4;i++)
+        // {
+       
+         
+       
+ // System.out.println("DC|"+"3.3|"+"PJVERACRUZ|"+nombreArrayList.get(0)+"|"+hourFormat.format(date)+"T"+dateFormat.format(date)+"|99"+"|"+nombreArrayList.get(1)+"|"+nombreArrayList.get(2)+"|MXN||"+nombreArrayList.get(3)+"|N|");
+	}public static int contador=1;
+        ///modicar el archivo creado 
+        public static void escribir(ArrayList nombreArrayList){
+            
+              System.out.println("tamano "+nombreArrayList.size()+"entro "+contador);
+             Iterator it = nombreArrayList.iterator();
+                 FileWriter fichero = null;
+                 PrintWriter pw = null;
+                 BufferedWriter pw2 = null;
+                 try{
+                      fichero = new FileWriter("prueba2.txt",true);
+                       pw2 = new BufferedWriter(fichero);
+                      pw = new PrintWriter(fichero);
+                 }catch (Exception e) {
+                 
+                 e.printStackTrace();
+                 }finally {
+           try { 
+                 
+              pw.println("DC|"+"3.3|"+"PJVERACRUZ|"+nombreArrayList.get(0)+"|"+dateFormat.format(date)+"T"+hourFormat.format(date)+"|99"+"|"+nombreArrayList.get(1)+"|"+nombreArrayList.get(2)+"|MXN||"+nombreArrayList.get(3)+"|N|");
+              pw.println("PUE|91170||||");
+              pw.println("EM|PJE970419FZ2|PODER JUDICIAL DEL ESTADO DE VERACRUZ");
+              pw.println("CNE|603||F5434322360||IP||");
+              pw.println("RC|"+nombreArrayList.get(4)+"|"+nombreArrayList.get(5)+"|P01");
+              pw.println("CNR|"+nombreArrayList.get(6)+"|"+nombreArrayList.get(7)+"|"+nombreArrayList.get(8)+"|"+nombreArrayList.get(9)+"|"+nombreArrayList.get(10)
+              +"|"+nombreArrayList.get(11)+"|"+nombreArrayList.get(12)+"|"+nombreArrayList.get(13)+"|"+nombreArrayList.get(14)+"|"+nombreArrayList.get(15)+"|"+nombreArrayList.get(16)
+              +"|"+nombreArrayList.get(17)+"|"+nombreArrayList.get(18)+"|"+nombreArrayList.get(19)+"|01|02|"+nombreArrayList.get(20)+"|"+nombreArrayList.get(21)
+              +"|"+nombreArrayList.get(22)+"|1|"+nombreArrayList.get(23)+"|"+nombreArrayList.get(24)+"|"+nombreArrayList.get(25)+"|"+nombreArrayList.get(26)+"|"+nombreArrayList.get(27)+"|VER");
+              pw.println("CN|84111505|1|ACT|Pago de nómina|"+nombreArrayList.get(28)+"|"+nombreArrayList.get(29)+"|"+nombreArrayList.get(30));
+              pw.println("MI|"+nombreArrayList.get(31)+"||");
+              pw.println("CNP|"+nombreArrayList.get(32)+"|"+nombreArrayList.get(33)+"|"+nombreArrayList.get(34)+"||||||||||");
+              pw.println("NVOEMP");
+        
+        
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
+       contador++;
+        }
 }
