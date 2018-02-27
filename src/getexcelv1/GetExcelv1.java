@@ -1,5 +1,6 @@
 
 package getexcelv1;
+import com.mysql.jdbc.Connection;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,6 +10,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -238,6 +243,16 @@ public class GetExcelv1 {
               pw.println("CN|84111505|1|ACT|Pago de nómina|"+nombreArrayList.get(28)+"|"+nombreArrayList.get(29)+"|"+nombreArrayList.get(30));
               pw.println("MI|"+nombreArrayList.get(31)+"||");
               pw.println("CNP|"+nombreArrayList.get(32)+"|"+nombreArrayList.get(33)+"|"+nombreArrayList.get(34)+"||||||||||");
+              String val=String.valueOf(nombreArrayList.get(35));
+              String val2=String.valueOf(nombreArrayList.get(36));
+              System.out.println("valor 11111:  "+val+"  valor 2:   "+val2);
+             if((!"0".equals(val))&&("0.0".equals(val2))){              
+                   pw.println("NPD||001|5111-11300001|Sueldos y Salariossi|"+nombreArrayList.get(35)+"|0.0");
+                  
+             }else{
+                  pw.println("NPD||001|5111-11300001|Sueldos y Salariosno|"+"0.0|"+nombreArrayList.get(36));
+             }
+              
               pw.println("NVOEMP");
         
         
