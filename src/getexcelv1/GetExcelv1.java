@@ -1097,7 +1097,7 @@ public class GetExcelv1 {
              String m6=String.valueOf(nombreArrayList.get(157));
              if(!"0.0".equals(m6)){              
                      
-                    pw.println("NDD|064|5115-15400030|Compensación por Grado de Responsabilidada|"+m6);
+                    pw.println("NDD|064|5115-15400030|Compensación por Grado de Responsabilidad|"+m6);
              }
              String m7=String.valueOf(nombreArrayList.get(158));
              if(!"0.0".equals(m7)){              
