@@ -937,7 +937,7 @@ public class GetExcelv1 {
               String j3=String.valueOf(nombreArrayList.get(126));
              if(!"0.0".equals(j3)){              
                      
-                    pw.println("NDD|004|2117-60000008|Libertad ser Fin SA de CV|"+j3);
+                    pw.println("NDD|004|2117-60000008|Libertad ser Fin SA de CV|"+j3);///bien////////////////////
              }
               String j4=String.valueOf(nombreArrayList.get(127));
              if(!"0.0".equals(j4)){              
