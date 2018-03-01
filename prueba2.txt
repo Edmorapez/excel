@@ -156,6 +156,35 @@ NDD|064|5115-15400007|Pago de Días Económicos No Disfrutados|1000.0
 NDD|063|5113-13200004|Bono Anual de Despensa|1.0
 NDD|064|5116-17100006|Estímulo a Servidores Públicos|2.0
 NDD|059|5115-15400014|Ayuda para la Adquisición de Utiles Escolares|3.0
+
+   String r5=String.valueOf(nombreArrayList.get(182));
+             String r6="";                        
+             if((!"0.0".equals(r1))&&("0.0".equals(r2))){              
+                     
+                    pw.println("NOP|002|5115-15400030|Subsidio para el empleo entregado al trabajador|"+r1+"||");
+             }else{
+                 if(("0.0".equals(r1))&&(!"0.0".equals(r2))){
+                
+                     pw.println("NOP|002|5115-15400030|Subsidio para el empleo entregado al trabajador||"+r2+"||");
+                 }else{
+                     if(("0.0".equals(r1))&&("0.0".equals(r2))){                      
+                     }
+                     else{
+                         if((!"0.0".equals(r1))&&(!"0.0".equals(r2))){
+                             pw.println("NOP|002|5115-15400030|Subsidio para el empleo entregado al trabajador||"+r2+"||");
+                         }
+                     }
+                 }
+             }
+
+
+
+NDD|064|5115-15400007|Pago de Días Económicos No Disfrutados|1.0
+
+
+
+si tiene valor en 1 poner valor
+si tiene valor 0 en 2 poner ||||
 NDD|064|5116-17100007|Premio Mensual por Buen Desempeño|4.0
 NDD|064|5115-15400017|Pago del Día de las Madres y Padres|5.0
 NDD|064|5115-15400023|Compensación Temporal Compactable|6.0
